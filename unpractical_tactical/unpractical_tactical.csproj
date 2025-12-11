@@ -21,7 +21,6 @@
 
   <!-- Where to deploy the mod after build -->
   <PropertyGroup>
-    <!-- TODO: update to your actual mod folder if different -->
     <SptModsDir>C:\SPT4\SPT\user\mods\c11-unpracticaltactical</SptModsDir>
     <!-- Path to Resources in the project (bundles, db, res, etc.) -->
     <ResourcesDir>$(ProjectDir)Resources</ResourcesDir>
