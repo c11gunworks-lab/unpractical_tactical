@@ -1,0 +1,25 @@
+{
+  "manifest": [
+    {
+      "key": "119tropic.bundle",
+      "dependencyKeys": [
+
+      ]
+    },
+    
+    {
+      "key": "sasmount.bundle",
+      "dependencyKeys": [
+        "shaders"
+
+      ]
+    },
+    {
+      "key": "sasfl.bundle",
+      "dependencyKeys": [
+        "shaders"
+
+      ]
+    }
+  ]
+}

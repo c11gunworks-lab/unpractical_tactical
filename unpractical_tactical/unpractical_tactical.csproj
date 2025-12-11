@@ -1,0 +1,103 @@
+﻿
+<!-- c11-unpracticaltactical.csproj (HYBRID) -->
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Core build settings -->
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- Versioning + clean output structure (optional but helpful) -->
+    <Version>4.0.0</Version>
+    <AssemblyName>c11-unpracticaltactical</AssemblyName>
+    <!-- Keep output path simple; avoid appending framework -->
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputType>Library</OutputType>
+    <!-- Optional: versioned output path under bin -->
+    <OutputPath>bin\$(Configuration)\$(ProjectName)\$(AssemblyName)-$(Version)\</OutputPath>
+  </PropertyGroup>
+
+  <!-- Where to deploy the mod after build -->
+  <PropertyGroup>
+    <!-- TODO: update to your actual mod folder if different -->
+    <SptModsDir>C:\SPT4\SPT\user\mods\c11-unpracticaltactical</SptModsDir>
+    <!-- Path to Resources in the project (bundles, db, res, etc.) -->
+    <ResourcesDir>$(ProjectDir)Resources</ResourcesDir>
+  </PropertyGroup>
+
+  <!-- Keep your existing DB copy items -->
+  <ItemGroup>
+    <ItemToCopy Include="..\db\CustomItems\**\*.json" />
+    <ItemToCopy Include="..\db\CustomLocales\**\*.json" />
+  </ItemGroup>
+
+  <!-- Copies JSON db into the mod folder (your original target, retained) -->
+  <Target Name="CopyDbJson" AfterTargets="Build">
+    <Message Importance="high" Text="[CopyDbJson] Copying db JSON to $(SptModsDir)\db" />
+    <MakeDir Directories="$(SptModsDir)\db\CustomItems" />
+    <MakeDir Directories="$(SptModsDir)\db\CustomLocales" />
+    <Copy SourceFiles="@(ItemToCopy)"
+          DestinationFolder="$(SptModsDir)\db\%(RecursiveDir)"
+          SkipUnchangedFiles="true" />
+  </Target>
+
+  <!-- Optional: Add SPTarkov packages if your mod integrates server-side behaviors -->
+
+  <!-- (Optional) Declare folders so they show up in Solution Explorer -->
+  <ItemGroup>
+    <Folder Include="Resources\bundles\" />
+    <Folder Include="Resources\db\" />
+    <Folder Include="Resources\db\CustomAssortSchemes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="WTT-ServerCommonLib" Version="2.0.6" />
+  </ItemGroup>
+
+  <!-- PostBuild: copy DLL + entire Resources folder to the mod directory -->
+  <!-- This keeps the mod folder in sync with your build and assets -->
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <PropertyGroup>
+      <_ModName>$(AssemblyName)</_ModName>
+      <_DllPath>$(TargetDir)$(TargetName).dll</_DllPath>
+      <_OutDir>$(SptModsDir)</_OutDir>
+      <_ResourcesDir>$(ProjectDir)Resources</_ResourcesDir>
+      <_BundlesSrc>$(_ResourcesDir)\bundles</_BundlesSrc>
+      <_BundlesDest>$(_OutDir)\bundles</_BundlesDest>
+    </PropertyGroup>
+
+    <!-- Ensure mod output folder exists -->
+    <MakeDir Directories="$(_OutDir)" />
+    <MakeDir Directories="$(_BundlesDest)" />
+
+    <!-- Copy DLL -->
+    <Exec Command="copy /Y &quot;$(_DllPath)&quot; &quot;$(_OutDir)\&quot;" />
+
+    <!-- Copy all bundles recursively -->
+    <Exec Command="xcopy &quot;$(_BundlesSrc)&quot; &quot;$(_BundlesDest)&quot; /E /I /Y" />
+
+    <!-- Flatten: move all files from subfolders to root -->
+    <Exec Command="
+    for /r &quot;$(_BundlesDest)&quot; %%F in (*) do (
+      if /I not &quot;%%~dpF&quot;==&quot;$(_BundlesDest)\&quot; (
+        move /Y &quot;%%F&quot; &quot;$(_BundlesDest)&quot;
+      )
+    )
+  " />
+
+    <!-- Remove empty subfolders -->
+    <Exec Command="
+    for /d /r &quot;$(_BundlesDest)&quot; %%D in (*) do (
+      if exist &quot;%%D&quot; (
+        dir /b &quot;%%D&quot; &gt;nul 2&gt;&amp;1 || rmdir /s /q &quot;%%D&quot;
+      )
+    )
+  " />
+
+    <Message Importance="high" Text="[PostBuild] Flattened bundles into $(_BundlesDest)" />
+  </Target>
+
+
+</Project>
