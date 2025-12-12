@@ -1,8 +1,23 @@
 {
   "manifest": [
     {
-      "key": "119tropic.bundle",
+      "key": "cvc.bundle",
       "dependencyKeys": [
+        "shaders"
+
+      ]
+    },
+    {
+      "key": "odst.bundle",
+      "dependencyKeys": [
+        "shaders"
+
+      ]
+    },
+    {
+      "key": "scouthelm.bundle",
+      "dependencyKeys": [
+        "shaders"
 
       ]
     },
@@ -17,6 +32,7 @@
     {
       "key": "sasfl.bundle",
       "dependencyKeys": [
+        "assets/systems/effects/nightvision.bundle",
         "shaders"
 
       ]

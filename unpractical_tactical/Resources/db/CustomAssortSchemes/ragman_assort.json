@@ -1,0 +1,52 @@
+{
+  "ragman": {
+    "items": [
+      {
+        "_id": "693b5c74695313e691981c1b",
+        "_tpl": "693b4c2ce49469667461d95d",
+        "parentId": "hideout",
+        "slotId": "hideout",
+        "upd": {
+          "StackObjectsCount": 999999,
+          "UnlimitedCount": true,
+          "BuyRestrictionMax": 2,
+          "Repairable": {
+            "Durability": 75,
+            "MaxDurability": 75
+          }
+        }
+      },
+      {
+        "_id": "693b5c74695313e691981c1c",
+        "_tpl": "6571199565daf6aa960c9b10",
+        "parentId": "693b5c74695313e691981c1b",
+        "slotId": "Helmet_top"
+      },
+      {
+        "_id": "693b5c74695313e691981c1d",
+        "_tpl": "6571199565daf6aa960c9b10",
+        "parentId": "693b5c74695313e691981c1b",
+        "slotId": "Helmet_back"
+      },
+      {
+        "_id": "693b5c74695313e691981c1e",
+        "_tpl": "6571199565daf6aa960c9b10",
+        "parentId": "693b5c74695313e691981c1b",
+        "slotId": "Helmet_ears"
+      }
+    ],
+    "barter_scheme": {
+      "693b5c74695313e691981c1b": [
+        [
+          {
+            "count": 17500,
+            "_tpl": "5449016a4bdc2d6f028b456f"
+          }
+        ]
+      ]
+    },
+    "loyal_level_items": {
+      "693b5c74695313e691981c1b": 1
+    }
+  }
+}

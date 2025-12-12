@@ -5,24 +5,23 @@ using SPTarkov.Server.Core.Models.Spt.Mod;
 using System.Reflection;
 using Range = SemanticVersioning.Range;
 
-namespace c11_tn_4;
+namespace unpractical_tactical;
 
 public record ModMetadata : AbstractModMetadata
 {
-    public override string ModGuid { get; init; } = "com.c11.truenorth4";
-    public override string Name { get; init; } = "True North";
+    public override string ModGuid { get; init; } = "com.c11.unpracticaltactical";
+    public override string Name { get; init; } = "Un-Practical Tactical";
     public override string Author { get; init; } = "C11";
     public override SemanticVersioning.Version Version { get; init; } = new("1.0.0");
 
-    // Allow any 4.0.x 
-    public override Range SptVersion { get; init; } = new("^4.0.0");
+    public override Range SptVersion { get; init; } = new("^4.0.5");
 
     public override string License { get; init; } = "MIT";
     public override bool? IsBundleMod { get; init; } = true;
 
     public override Dictionary<string, Range>? ModDependencies { get; init; } = new()
     {
-        { "com.wtt.commonlib", new Range("~2.0.0") }
+        { "com.wtt.commonlib", new Range("~2.0.5") }
     };
 
     public override string? Url { get; init; }
@@ -31,9 +30,9 @@ public record ModMetadata : AbstractModMetadata
 }
 
 [Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 2)]
-public class TrueNorth(
+public class Upt(
     WTTServerCommonLib.WTTServerCommonLib wttCommon,
-    ILogger<TrueNorth> log
+    ILogger<Upt> log
 ) : IOnLoad
 {
     public async Task OnLoad()
@@ -42,7 +41,7 @@ public class TrueNorth(
 
         // Log resource names once while wiring things up
         foreach (var name in assembly.GetManifestResourceNames())
-            log.LogDebug("[TrueNorth] Embedded resource: {Res}", name);
+            log.LogDebug("[UPT] Embedded resource: {Res}", name);
 
         // WTT ingestion
         await wttCommon.CustomItemServiceExtended.CreateCustomItems(assembly);
@@ -50,7 +49,7 @@ public class TrueNorth(
         await wttCommon.CustomAssortSchemeService.CreateCustomAssortSchemes(assembly);
 
 
-        log.LogInformation("Welcome to the True North");
+        log.LogInformation("Loaded Un-Practical Tactical");
         await Task.CompletedTask;
     }
 }
